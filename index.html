@@ -1,472 +1,77 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Einkaufsliste Sa–Di</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #f5f0eb;
-    --card: #ffffff;
-    --text: #2c2416;
-    --text-muted: #8a7e6f;
-    --accent: #5a7a3a;
-    --accent-light: #e8f0de;
-    --border: #e2dbd2;
-    --checked-bg: #f9f7f4;
-    --checked-text: #bfb8ad;
-    --shadow: 0 1px 3px rgba(44,36,22,0.06);
-    --radius: 12px;
-  }
+# Einkaufsliste – 4 Tage mit Jacques Pépin
 
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+> Zum Abhaken auf GitHub: Checkboxen antippen!
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding-bottom: 100px;
-  }
+## Fleisch, Fisch & Wurst
 
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--bg);
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--border);
-  }
+- [ ] Hähnchenschenkel (Ober- + Unterschenkel) – 1,2 kg (8 Stück)
+- [ ] Rinderschulter oder -wade (am Stück) – 800 g
+- [ ] Lachsfilet mit Haut – 500 g (2 große Stücke)
+- [ ] Guanciale oder durchwachsener Speck (am Stück) – 250 g
+- [ ] Durchwachsener Speck (am Stück, für Bourguignon) – 150 g
+- [ ] Gekochter Schinken (in dicken Scheiben) – 160 g
 
-  header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 24px;
-    font-weight: 400;
-    color: var(--text);
-    letter-spacing: -0.3px;
-  }
+## Milchprodukte & Eier
 
-  .progress-bar {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+- [ ] Eier (Größe M) – 14 Stück
+- [ ] Butter – 250 g Block
+- [ ] Milch 3,5 % – 350 ml
+- [ ] Crème fraîche – kleiner Becher (mind. 4 EL)
+- [ ] Gruyère – 120 g (am Stück)
+- [ ] Pecorino Romano oder Parmesan – 120 g (am Stück)
 
-  .progress-track {
-    flex: 1;
-    height: 6px;
-    background: var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-  }
+## Obst & Gemüse
 
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 3px;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 0%;
-  }
+- [ ] Festkochende Kartoffeln – 800 g
+- [ ] Mehligkochende Kartoffeln – 800 g
+- [ ] Kleine Kartoffeln (festkochend, für Bourguignon) – 400 g
+- [ ] Champignons – 200 g
+- [ ] Karotten – 200 g
+- [ ] Lauch – 3 Stangen
+- [ ] Perlzwiebeln (oder 2 normale Zwiebeln) – 150 g
+- [ ] Tomaten – 2 Stück
+- [ ] Knoblauch – 2 Knollen
+- [ ] Zitronen – 2 Stück
+- [ ] Walnüsse – 40 g
 
-  .progress-text {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent);
-    min-width: 42px;
-    text-align: right;
-  }
+## Kräuter (frisch!)
 
-  .category {
-    margin: 16px 16px 0;
-  }
+- [ ] Thymian – 1 Bund
+- [ ] Glatte Petersilie – 1 Bund
+- [ ] Schnittlauch – 1 Bund
+- [ ] Dill – 1 kleiner Bund (oder Schnittlauch extra)
+- [ ] Estragon – ein paar Zweige (optional)
 
-  .category-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 4px;
-    cursor: pointer;
-    user-select: none;
-  }
+## Brot
 
-  .category-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
+- [ ] Gutes Landbrot / Bauernbrot – 1 Laib
+- [ ] Sauerteigbrot (falls kein Bauernbrot) – alternativ
 
-  .category-name {
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    flex: 1;
-  }
+## Getreide & Nudeln
 
-  .category-count {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    background: var(--border);
-    padding: 2px 8px;
-    border-radius: 10px;
-  }
+- [ ] Spaghetti – 500 g
+- [ ] Mehl Type 405 – 125 g (kleine Packung reicht)
 
-  .category-items {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
+## Gewürze, Öle & Saucen
 
-  .item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.15s, opacity 0.3s;
-  }
+- [ ] Olivenöl – 1 Flasche
+- [ ] Dijon-Senf – 1 Glas
+- [ ] Tomatenmark – 1 kleine Tube
+- [ ] Muskatnuss (gemahlen)
+- [ ] Weißer Pfeffer
+- [ ] Schwarzer Pfeffer (Mühle)
+- [ ] Salz
+- [ ] Lorbeerblätter
+- [ ] Honig – 3 EL
 
-  .item:last-child { border-bottom: none; }
+## Wein & Brühe
 
-  .item:active { background: var(--accent-light); }
+- [ ] Trockener Weißwein – 1 kleine Flasche (oder Hühnerbrühe)
+- [ ] Kräftiger Rotwein – 1 Flasche (einen, den Sie auch trinken würden!)
+- [ ] Rinderbrühe – 200 ml (Glas oder Würfel)
 
-  .item.checked {
-    background: var(--checked-bg);
-  }
+---
 
-  .item.checked .item-text {
-    color: var(--checked-text);
-    text-decoration: line-through;
-    text-decoration-color: var(--border);
-  }
+*„Kochen Sie niemals mit einem Wein, den Sie nicht trinken möchten." – Jacques Pépin*
 
-  .checkbox {
-    width: 24px;
-    height: 24px;
-    border-radius: 7px;
-    border: 2px solid var(--border);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .item.checked .checkbox {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .checkbox svg {
-    width: 14px;
-    height: 14px;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.2s;
-  }
-
-  .item.checked .checkbox svg {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .item-text {
-    font-size: 15px;
-    line-height: 1.4;
-    font-weight: 400;
-    transition: color 0.2s;
-  }
-
-  .item-amount {
-    font-weight: 600;
-  }
-
-  .bottom-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--card);
-    border-top: 1px solid var(--border);
-    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
-    display: flex;
-    gap: 10px;
-    z-index: 100;
-  }
-
-  .btn {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.1s, opacity 0.15s;
-  }
-
-  .btn:active { transform: scale(0.97); }
-
-  .btn-reset {
-    background: var(--border);
-    color: var(--text-muted);
-  }
-
-  .btn-uncheck {
-    background: var(--accent-light);
-    color: var(--accent);
-  }
-
-  .confetti {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    pointer-events: none;
-    z-index: 999;
-    display: none;
-  }
-
-  .done-banner {
-    display: none;
-    text-align: center;
-    padding: 30px 20px;
-    animation: fadeIn 0.5s;
-  }
-
-  .done-banner.show { display: block; }
-
-  .done-banner .emoji { font-size: 48px; margin-bottom: 8px; }
-  .done-banner .msg {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
-    color: var(--accent);
-  }
-
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-</style>
-</head>
-<body>
-
-<header>
-  <h1>Einkaufsliste Sa – Di</h1>
-  <div class="progress-bar">
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-text" id="progressText">0 %</div>
-  </div>
-</header>
-
-<div id="app"></div>
-
-<div class="done-banner" id="doneBanner">
-  <div class="emoji">🎉</div>
-  <div class="msg">Alles eingekauft!</div>
-</div>
-
-<div class="bottom-bar">
-  <button class="btn btn-reset" onclick="resetAll()">Alles zurücksetzen</button>
-  <button class="btn btn-uncheck" onclick="uncheckAll()">Haken entfernen</button>
-</div>
-
-<script>
-const DATA = [
-  {
-    name: "Fleisch & Geflügel",
-    icon: "🥩",
-    color: "#fce8e8",
-    items: [
-      "400 g Schweinegeschnetzeltes",
-      "4 Bratwürste (à ca. 100 g)",
-      "700 g Hähnchenbrust (Mo + Di)",
-    ]
-  },
-  {
-    name: "Milchprodukte & Eier",
-    icon: "🥚",
-    color: "#fef6e0",
-    items: [
-      "6 Eier (Größe M)",
-      "180 g Magerquark",
-      "150 g Schmand",
-      "Butter (Kleinpackung)",
-      "500 ml Milch (1,5%)",
-      "50 g Feta",
-      "40 g Käsescheiben (Gouda/Emmentaler)",
-    ]
-  },
-  {
-    name: "Obst",
-    icon: "🍌",
-    color: "#fff5cc",
-    items: [
-      "2 Bananen",
-      "300 g Beeren (frisch oder TK)",
-      "1 Apfel",
-      "1 Zitrone",
-      "1 Avocado",
-    ]
-  },
-  {
-    name: "Gemüse & Salat",
-    icon: "🥬",
-    color: "#e8f0de",
-    items: [
-      "500 g Kartoffeln (festkochend)",
-      "250 g Champignons",
-      "200 g Brokkoli",
-      "3 Paprika (rot)",
-      "3 Zwiebeln",
-      "6 Knoblauchzehen",
-      "3 Möhren",
-      "100 g Kirschtomaten",
-      "4 Tomaten",
-      "1,5 Gurken",
-      "200 g Eisbergsalat",
-      "100 g Kopfsalat",
-    ]
-  },
-  {
-    name: "Trockenwaren & Konserven",
-    icon: "🍚",
-    color: "#f0ece4",
-    items: [
-      "120 g Haferflocken (zart)",
-      "400 g Reis (Langkorn/Basmati)",
-      "250 g Spätzle (Kühlregal)",
-      "1 Packung Vollkornbrot",
-      "50 g Mehl (Typ 405)",
-      "1 Dose Kichererbsen",
-      "1 Dose Kokosmilch (400 ml)",
-      "300 g Sauerkraut",
-      "15 g Mandeln (gehobelt)",
-    ]
-  },
-  {
-    name: "Gewürze & Sonstiges",
-    icon: "🧂",
-    color: "#ede8f5",
-    items: [
-      "Olivenöl",
-      "Paprikapulver (edelsüß)",
-      "Kreuzkümmel",
-      "Oregano (getrocknet)",
-      "Currypulver",
-      "Kurkuma",
-      "Ingwer (frisch oder Pulver)",
-      "Kümmel (ganz)",
-      "Zimt",
-      "Chiliflocken",
-      "Petersilie (frisch oder TK)",
-      "Honig",
-      "Sojasoße",
-      "Essig-Öl-Dressing",
-      "Brühwürfel (Gemüse oder Fleisch)",
-      "Schmalz (optional)",
-    ]
-  }
-];
-
-const STORAGE_KEY = "einkauf_sa_di_v2";
-
-function loadState() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-  } catch { return {}; }
-}
-
-function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-let checkedState = loadState();
-
-function getItemId(catIdx, itemIdx) {
-  return `${catIdx}-${itemIdx}`;
-}
-
-function render() {
-  const app = document.getElementById("app");
-  let html = "";
-
-  DATA.forEach((cat, ci) => {
-    const checkedCount = cat.items.filter((_, ii) => checkedState[getItemId(ci, ii)]).length;
-    html += `<div class="category">
-      <div class="category-header">
-        <div class="category-icon" style="background:${cat.color}">${cat.icon}</div>
-        <div class="category-name">${cat.name}</div>
-        <div class="category-count">${checkedCount}/${cat.items.length}</div>
-      </div>
-      <div class="category-items">`;
-
-    cat.items.forEach((item, ii) => {
-      const id = getItemId(ci, ii);
-      const isChecked = checkedState[id];
-      // Bold the amount portion
-      const formatted = item.replace(/^([\d,\.]+\s*(?:g|kg|ml|l|EL|TL|Dose|Packung|Stück)?)\s+/, '<span class="item-amount">$1</span> ');
-      html += `<div class="item${isChecked ? ' checked' : ''}" onclick="toggle('${id}')">
-        <div class="checkbox"><svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="item-text">${formatted}</div>
-      </div>`;
-    });
-
-    html += `</div></div>`;
-  });
-
-  app.innerHTML = html;
-  updateProgress();
-}
-
-function toggle(id) {
-  checkedState[id] = !checkedState[id];
-  saveState(checkedState);
-  render();
-}
-
-function updateProgress() {
-  let total = 0, checked = 0;
-  DATA.forEach((cat, ci) => {
-    cat.items.forEach((_, ii) => {
-      total++;
-      if (checkedState[getItemId(ci, ii)]) checked++;
-    });
-  });
-  const pct = total ? Math.round((checked / total) * 100) : 0;
-  document.getElementById("progressFill").style.width = pct + "%";
-  document.getElementById("progressText").textContent = pct + " %";
-
-  const banner = document.getElementById("doneBanner");
-  if (pct === 100) {
-    banner.classList.add("show");
-  } else {
-    banner.classList.remove("show");
-  }
-}
-
-function resetAll() {
-  if (confirm("Wirklich alles zurücksetzen?")) {
-    checkedState = {};
-    saveState(checkedState);
-    render();
-  }
-}
-
-function uncheckAll() {
-  checkedState = {};
-  saveState(checkedState);
-  render();
-}
-
-render();
-</script>
-</body>
-</html>
+*Prüfen Sie Ihren Vorrat: Butter, Eier, Olivenöl, Senf und Gewürze hat man oft schon daheim.*
